@@ -5,15 +5,19 @@ from src.graph import EARTH_RADIUS_M
 HEURISTIC_SLACK = 1e-9
 
 
-def _tag(fn, name: str, time_dependent: bool, per_metre: float):
+def _tag(fn, name: str, time_dependent: bool, per_metre: float, lower_bound=None):
     fn.weight_name = name
     fn.time_dependent = time_dependent
     fn.per_metre = per_metre
+    if lower_bound is not None:
+        fn.lower_bound = lower_bound
+    else:
+        fn.lower_bound = None if time_dependent else fn
     return fn
 
 
-def make_weight(fn, name: str, *, time_dependent: bool = False, per_metre: float = 0.0):
-    return _tag(fn, name, time_dependent, per_metre)
+def make_weight(fn, name: str, *, time_dependent: bool = False, per_metre: float = 0.0, lower_bound=None):
+    return _tag(fn, name, time_dependent, per_metre, lower_bound)
 
 
 def distance_weight(g):

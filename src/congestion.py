@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from src import config
-from src.routing.weights import make_weight
+from src.routing.weights import free_flow_weight, make_weight
 
 DAY_SECONDS = 86400.0
 SLOT_SECONDS = config.SLOT_MINUTES * 60.0
@@ -159,7 +159,13 @@ class CongestionModel:
             tab = tables[cls[eid]]
             return base[eid] * corr[eid] * (tab[k] + (x - k) * (tab[k + 1] - tab[k]))
 
-        return make_weight(weight, "time_dependent", time_dependent=True, per_metre=1.0 / self.graph.max_speed_mps())
+        return make_weight(
+            weight,
+            "time_dependent",
+            time_dependent=True,
+            per_metre=1.0 / self.graph.max_speed_mps(),
+            lower_bound=free_flow_weight(self.graph),
+        )
 
     def route_metrics(self, edges, day_type: str, depart_s: float) -> RouteMetrics:
         elapsed = 0.0

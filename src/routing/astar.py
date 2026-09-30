@@ -14,6 +14,7 @@ def astar(
     banned_nodes=NO_BANS,
     banned_edges=NO_BANS,
     record: bool = False,
+    cost_limit: float = INF,
 ) -> SearchResult:
     out_edges = g.out_edges
     dist = {source: init}
@@ -47,11 +48,14 @@ def astar(
             nd = g_u + weight(eid, g_u)
             old = dist.get(v)
             if old is None or nd < old:
-                dist[v] = nd
-                prev[v] = (u, eid)
                 hv = h_cache.get(v)
                 if hv is None:
                     hv = heuristic(v)
                     h_cache[v] = hv
-                push(v, nd + hv)
+                f_new = nd + hv
+                if hv == INF or f_new > cost_limit:
+                    continue
+                dist[v] = nd
+                prev[v] = (u, eid)
+                push(v, f_new)
     return SearchResult(False, INF, [], [], settled, relaxed, order, None, dist)

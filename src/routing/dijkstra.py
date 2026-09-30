@@ -15,9 +15,10 @@ def dijkstra(
     banned_nodes=NO_BANS,
     banned_edges=NO_BANS,
     record: bool = False,
+    cost_limit: float = INF,
 ) -> SearchResult:
     if heap == "decrease_key":
-        return _dijkstra_decrease_key(g, source, target, weight, init, banned_nodes, banned_edges, record)
+        return _dijkstra_decrease_key(g, source, target, weight, init, banned_nodes, banned_edges, record, cost_limit)
     if heap != "lazy":
         raise ValueError(f"unknown heap strategy {heap!r}")
 
@@ -50,6 +51,8 @@ def dijkstra(
                 continue
             relaxed += 1
             nd = d + weight(eid, d)
+            if nd > cost_limit:
+                continue
             old = dist.get(v)
             if old is None or nd < old:
                 dist[v] = nd
@@ -58,7 +61,7 @@ def dijkstra(
     return _finish(reached, source, target, dist, prev, settled, relaxed, order)
 
 
-def _dijkstra_decrease_key(g, source, target, weight, init, banned_nodes, banned_edges, record):
+def _dijkstra_decrease_key(g, source, target, weight, init, banned_nodes, banned_edges, record, cost_limit):
     out_edges = g.out_edges
     dist = {source: init}
     prev: dict = {}
@@ -87,6 +90,8 @@ def _dijkstra_decrease_key(g, source, target, weight, init, banned_nodes, banned
                 continue
             relaxed += 1
             nd = d + weight(eid, d)
+            if nd > cost_limit:
+                continue
             old = dist.get(v)
             if old is None:
                 dist[v] = nd
@@ -106,3 +111,30 @@ def _finish(reached, source, target, dist, prev, settled, relaxed, order) -> Sea
         return SearchResult(False, INF, [], [], settled, relaxed, order, None, dist)
     nodes, edges = trace_back(prev, source, target)
     return SearchResult(True, dist[target], nodes, edges, settled, relaxed, order, None, dist)
+
+
+def backward_distances(g, target: int, weight) -> tuple[dict, int, int]:
+    in_edges = g.in_edges
+    dist = {target: 0.0}
+    queue = LazyMinHeap()
+    push = queue.push
+    pop = queue.pop
+    push(target, 0.0)
+    settled = 0
+    relaxed = 0
+    while True:
+        try:
+            v, d = pop()
+        except IndexError:
+            break
+        if d > dist[v]:
+            continue
+        settled += 1
+        for eid, u in in_edges(v):
+            relaxed += 1
+            nd = d + weight(eid, d)
+            old = dist.get(u)
+            if old is None or nd < old:
+                dist[u] = nd
+                push(u, nd)
+    return dist, settled, relaxed

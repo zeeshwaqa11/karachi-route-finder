@@ -69,10 +69,14 @@ MAX_VALID_SPEED_KMH = 130.0
 DEFAULT_ROUTE_WEIGHTS = {"time": 0.5, "distance": 0.2, "congestion": 0.3}
 
 SNAP_WARNING_METRES = 300.0
+SNAP_REJECT_METRES = 2000.0
+MAX_MAP_EXPLORED_POINTS = 6000
 
 DIVERSITY_THRESHOLD = 0.7
 YEN_MAX_CANDIDATES_FACTOR = 12
 YEN_MAX_PATHS_ABSOLUTE = 80
+ALTERNATIVE_COST_RATIO = 1.5
+SPUR_STRIDE_DIVISOR = 4.0
 
 SLOT_MINUTES = 15
 SLOTS_PER_DAY = 24 * 60 // SLOT_MINUTES
@@ -156,7 +160,6 @@ CONGESTION_THRESHOLDS = {"low_below": 1.25, "heavy_from": 1.60}
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_MIN_INTERVAL_S = 1.0
 NOMINATIM_USER_AGENT = "KarachiRouteFinder/1.0 (portfolio project; https://github.com/your-username/karachi-route-finder)"
-GEOCODE_VIEWBOX = None
 
 ATTRIBUTION = "© OpenStreetMap contributors"
 SIMULATION_NOTICE = "Congestion is SIMULATED from assumed time-of-day profiles, not live traffic. All travel times are estimates."
