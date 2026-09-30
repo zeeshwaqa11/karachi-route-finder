@@ -1,0 +1,21 @@
+[project]
+name = "karachi-route-finder"
+version = "1.0.0"
+description = "Karachi road network routing with hand-written Dijkstra, A*, Yen's K-shortest paths and simulated time-dependent congestion"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "real_graph: needs the cached Karachi graph built by scripts/build_graph.py",
+]
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E741", "B905"]
