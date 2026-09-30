@@ -33,6 +33,14 @@ def random_geo_graph(seed: int, n: int = 30, extra_edges: int = 60, parallel: bo
     if parallel:
         for _ in range(max(1, extra_edges // 6)):
             pairs.append(rng.choice(pairs))
+    if not parallel:
+        unique = []
+        seen = set()
+        for pair in pairs:
+            if pair not in seen:
+                seen.add(pair)
+                unique.append(pair)
+        pairs = unique
     classes = config.ROAD_CLASSES
     for a, b in pairs:
         hav = haversine_m(lat[a], lon[a], lat[b], lon[b])
