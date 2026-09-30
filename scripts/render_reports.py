@@ -171,7 +171,16 @@ def block_heap(data: dict) -> str:
         ["Strategy", "Median ms", "p95 ms", "Heap pushes*", "Heap pops*", "decrease_key calls*", "Stale pops*"], rows
     )
     sample = next((r["operations"]["sample_pairs"] for r in data.get("heap_strategy", []) if "operations" in r), "?")
-    return table + f"\n\n*Operation counts are totals over the first {sample} pairs."
+    ratio = next(
+        (r["paired_runtime_ratio_median"] for r in data.get("heap_strategy", []) if "paired_runtime_ratio_median" in r), None
+    )
+    text = table + f"\n\n*Operation counts are totals over the first {sample} pairs."
+    if ratio is not None:
+        text += (
+            " Both strategies ran on the same pairs, interleaved and alternating which goes first; the median per-pair "
+            f"ratio of `decrease_key` runtime to lazy runtime is **{ratio:.2f}**."
+        )
+    return text
 
 
 def block_yen(data: dict) -> str:

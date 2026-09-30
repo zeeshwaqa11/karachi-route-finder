@@ -1,0 +1,40 @@
+{
+ "area_key": "central",
+ "area_label": "Central Karachi (Saddar, Clifton, PECHS, Gulshan, Airport corridor)",
+ "osm_nodes_downloaded": 65035,
+ "osm_edges_downloaded": 182493,
+ "self_loops_dropped": 37,
+ "parallel_edges_merged": 285,
+ "nodes_before_scc": 65035,
+ "edges_before_scc": 182171,
+ "nodes": 64420,
+ "edges": 180594,
+ "nodes_dropped_by_scc": 615,
+ "edges_dropped_by_scc": 1577,
+ "edges_with_imputed_speed": 115453,
+ "imputed_share": 0.6392958791543462,
+ "edges_by_class": {
+  "motorway": 71,
+  "trunk": 782,
+  "primary": 3814,
+  "secondary": 6488,
+  "tertiary": 21117,
+  "residential": 148322,
+  "service": 0
+ },
+ "default_speeds_kmh": {
+  "motorway": 80.0,
+  "trunk": 65.0,
+  "primary": 55.0,
+  "secondary": 45.0,
+  "tertiary": 40.0,
+  "residential": 30.0,
+  "service": 20.0
+ },
+ "corridor_edges": {
+  "Shahrah-e-Faisal": 273,
+  "M.A. Jinnah Road": 186,
+  "University Road": 188,
+  "I.I. Chundrigar Road": 30
+ }
+}

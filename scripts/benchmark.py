@@ -177,19 +177,29 @@ class CountingIndexed(IndexedMinHeap):
 
 def bench_heap(graph, pairs, sample: int) -> list[dict]:
     weight = free_flow_weight(graph)
-    rows = []
-    for strategy in ("lazy", "decrease_key"):
-        print(f"  dijkstra with {strategy}", flush=True)
-        runtimes, settled = [], []
-        started = time.perf_counter()
-        for i, (s, t) in enumerate(pairs, 1):
-            res, ms = timed(dijkstra, graph, s, t, weight, heap=strategy)
-            runtimes.append(ms)
-            settled.append(res.settled)
-            progress(strategy, i, len(pairs), started)
-        rows.append(
-            {"strategy": strategy, "weight": "time", "n": len(pairs), "runtime_ms": stats(runtimes), "settled": stats(settled)}
-        )
+    strategies = ("lazy", "decrease_key")
+    runtimes = {name: [] for name in strategies}
+    settled = {name: [] for name in strategies}
+    started = time.perf_counter()
+    print("  dijkstra with lazy and decrease_key, interleaved per pair", flush=True)
+    for i, (s, t) in enumerate(pairs, 1):
+        order = strategies if i % 2 else strategies[::-1]
+        for name in order:
+            res, ms = timed(dijkstra, graph, s, t, weight, heap=name)
+            runtimes[name].append(ms)
+            settled[name].append(res.settled)
+        progress("heap", i, len(pairs), started)
+    rows = [
+        {
+            "strategy": name,
+            "weight": "time",
+            "n": len(pairs),
+            "runtime_ms": stats(runtimes[name]),
+            "settled": stats(settled[name]),
+            "paired_runtime_ratio_median": float(np.median(np.array(runtimes["decrease_key"]) / np.array(runtimes["lazy"]))),
+        }
+        for name in strategies
+    ]
     original = (dijkstra_module.LazyMinHeap, dijkstra_module.IndexedMinHeap)
     dijkstra_module.LazyMinHeap = CountingLazy
     dijkstra_module.IndexedMinHeap = CountingIndexed

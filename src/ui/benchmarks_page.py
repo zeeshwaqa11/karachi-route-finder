@@ -10,6 +10,7 @@ ALGORITHM_LABELS = {
     "bidirectional": "Bidirectional Dijkstra",
     "astar": "A*",
     "networkx_dijkstra": "NetworkX (reference)",
+    "networkx_bidirectional": "NetworkX bidirectional (reference)",
 }
 WEIGHT_LABELS = {"distance": "Distance", "time": "Free-flow time"}
 PALETTE = ["#0072B2", "#D55E00", "#009E73", "#CC79A7"]
@@ -115,7 +116,6 @@ def render() -> None:
                     "Strategy": r["strategy"].replace("_", " "),
                     "Median runtime (ms)": _stat(r, "runtime_ms", "median"),
                     "95th percentile runtime (ms)": _stat(r, "runtime_ms", "p95"),
-                    "Median heap pushes": _stat(r, "pushes", "median"),
                 }
                 for r in heap_rows
             ]
