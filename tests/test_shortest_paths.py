@@ -314,3 +314,19 @@ def test_astar_equals_dijkstra_on_real_graph_for_200_pairs():
             a = astar(g, s, t, weight, haversine_heuristic(g, t, weight.per_metre))
             d = dijkstra(g, s, t, weight)
             assert close(a.cost, d.cost, rel=1e-9, abs_=1e-6), (s, t)
+
+
+@pytest.mark.parametrize("seed", range(10))
+def test_csr_and_adjacency_representations_give_identical_costs(seed):
+    rng = random.Random(seed)
+    adjacency = random_geo_graph(seed, n=30, extra_edges=80)
+    csr = adjacency.to_csr()
+    for kind in ("length", "time"):
+        wa = edge_weight(adjacency, kind)
+        wc = edge_weight(csr, kind)
+        for _ in range(6):
+            s, t = rng.randrange(adjacency.n), rng.randrange(adjacency.n)
+            expected = dijkstra(adjacency, s, t, wa).cost
+            assert close(dijkstra(csr, s, t, wc).cost, expected)
+            assert close(bidirectional_dijkstra(csr, s, t, wc).cost, expected)
+            assert close(astar(csr, s, t, wc, lambda u: 0.0).cost, expected)

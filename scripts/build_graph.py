@@ -1,4 +1,5 @@
 import argparse
+import json
 import time
 
 from src import config
@@ -48,6 +49,9 @@ def main() -> None:
     report["corridor_edges"] = CongestionModel(graph).corridor_edges
     graph.meta = report
     graph.save(target)
+    stats_path = config.reports_dir() / "graph_stats.json"
+    stats_path.parent.mkdir(parents=True, exist_ok=True)
+    stats_path.write_text(json.dumps(report, indent=1, ensure_ascii=False), encoding="utf-8")
     print(f"  converted and saved to {target} in {time.perf_counter() - started:.1f}s")
     print_report(report)
 
