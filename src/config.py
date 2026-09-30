@@ -122,25 +122,36 @@ CLASS_SENSITIVITY = {
 CORRIDOR_MULTIPLIERS = {
     "Shahrah-e-Faisal": {
         "multiplier": 1.25,
-        "aliases": ["Shahrah-e-Faisal", "Shara-e-Faisal", "Sharea Faisal", "Shahra-e-Faisal", "Sharah-e-Faisal", "Sharae Faisal"],
+        "aliases": [
+            "Shahrah-e-Faisal",
+            "Shara-e-Faisal",
+            "Sharea Faisal",
+            "Shahra-e-Faisal",
+            "Sharae Faisal",
+            "Sh-e-Faisal",
+            "شاہراہ فیصل",
+        ],
     },
     "M.A. Jinnah Road": {
         "multiplier": 1.30,
-        "aliases": ["M.A. Jinnah Road", "M. A. Jinnah Road", "MA Jinnah Road", "Muhammad Ali Jinnah Road"],
+        "aliases": [
+            "M.A. Jinnah Road",
+            "New M.A. Jinnah Road",
+            "Muhammad Ali Jinnah Road",
+            "محمد علی جناح روڈ",
+        ],
     },
     "University Road": {
         "multiplier": 1.25,
-        "aliases": ["University Road", "Shahrah-e-Jamia", "Shahrah-e-Jamia Karachi"],
+        "aliases": ["University Road", "یونیورسٹی روڈ"],
     },
     "I.I. Chundrigar Road": {
         "multiplier": 1.30,
-        "aliases": ["I.I. Chundrigar Road", "I. I. Chundrigar Road", "II Chundrigar Road", "Chundrigar Road"],
+        "aliases": ["I.I. Chundrigar Road", "II Chundrigar Road", "آئی آئی چندریگر روڈ"],
     },
 }
 
 CONGESTION_THRESHOLDS = {"low_below": 1.25, "heavy_from": 1.60}
-
-FIFO_SLACK = 0.5
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_MIN_INTERVAL_S = 1.0

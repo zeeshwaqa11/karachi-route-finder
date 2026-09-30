@@ -293,7 +293,8 @@ class CSRGraph(_GraphCommon):
         return [(float(x), float(y)) for x, y in self.geom_xy[a:b]]
 
     def name_list(self):
-        return [str(self.names[i]) for i in self.name_idx]
+        names = self.names.tolist()
+        return [names[i] for i in self.name_idx.tolist()]
 
     def to_adjacency(self) -> AdjacencyGraph:
         g = AdjacencyGraph(self.node_ids.tolist(), self.lat, self.lon)

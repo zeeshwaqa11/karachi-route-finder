@@ -2,6 +2,7 @@ import argparse
 import time
 
 from src import config
+from src.congestion import CongestionModel
 from src.graph import CSRGraph
 from src.osm_convert import convert_osmnx_graph
 from src.osm_download import download_raw_graph
@@ -21,6 +22,7 @@ def print_report(report: dict) -> None:
         "use the default speed for their road class"
     )
     print(f"  edges by class:         {report['edges_by_class']}")
+    print(f"  named corridor edges:   {report.get('corridor_edges')}")
 
 
 def main() -> None:
@@ -43,6 +45,8 @@ def main() -> None:
     print("Converting to the compact graph structure")
     started = time.perf_counter()
     graph, report = convert_osmnx_graph(osm_graph)
+    report["corridor_edges"] = CongestionModel(graph).corridor_edges
+    graph.meta = report
     graph.save(target)
     print(f"  converted and saved to {target} in {time.perf_counter() - started:.1f}s")
     print_report(report)
