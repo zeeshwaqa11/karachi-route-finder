@@ -59,7 +59,8 @@ def test_routing_modules_import_cleanly_without_networkx_loaded():
 
     code = (
         "import sys\n"
-        "import src.routing.dijkstra, src.routing.astar, src.routing.bidirectional, src.routing.yen, src.congestion, src.planner\n"
+        "import src.routing.dijkstra, src.routing.astar, src.routing.bidirectional\n"
+        "import src.routing.yen, src.congestion, src.planner\n"
         "sys.exit(1 if 'networkx' in sys.modules else 0)\n"
     )
     root = SRC.parent
